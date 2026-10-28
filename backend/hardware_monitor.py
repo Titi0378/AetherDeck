@@ -1,5 +1,5 @@
 """
-Hardware Monitor & PC Resource Analyzer for OmniConsole.
+Hardware Monitor & PC Resource Analyzer for AetherDeck.
 Detects CPU, RAM, GPU on Windows and calculates compatibility tiers for each console
 so lightweight PCs can smoothly run lightweight/medium emulators and receive tailored
 optimizations.

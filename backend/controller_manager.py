@@ -1,5 +1,5 @@
 """
-Centralized Controller Hub & Auto-Configuration Engine for OmniConsole.
+Centralized Controller Hub & Auto-Configuration Engine for AetherDeck.
 
 Detects XInput (Xbox), DirectInput / WinMM (PlayStation, Switch Pro, USB retro joysticks) and the
 keyboard, keeps one set of user bindings (per-action keyboard key + gamepad button) and translates

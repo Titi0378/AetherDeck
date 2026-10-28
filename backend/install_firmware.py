@@ -38,7 +38,7 @@ def ensure_firmware_installed():
     # 2. Download firmware zip if not present
     if not os.path.exists(FIRMWARE_ZIP) or os.path.getsize(FIRMWARE_ZIP) < 330000000:
         print(f"Downloading Firmware 18.0.0 from {URL}...")
-        headers = {"User-Agent": "Mozilla/5.0 OmniConsole/1.0"}
+        headers = {"User-Agent": "Mozilla/5.0 AetherDeck/1.0"}
         with requests.get(URL, headers=headers, stream=True, timeout=60, allow_redirects=True) as r:
             r.raise_for_status()
             with open(FIRMWARE_ZIP, "wb") as f:

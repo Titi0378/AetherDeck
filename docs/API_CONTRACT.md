@@ -1,4 +1,4 @@
-# OmniConsole — Contrat d'API (backend Tornado <-> frontend)
+# AetherDeck — Contrat d'API (backend Tornado <-> frontend)
 
 Toutes les routes renvoient du JSON `{"ok": bool, ...}`. Le frontend est servi en statique depuis `frontend/`
 (index.html, styles.css, app.js) sur `http://127.0.0.1:<port>/`. Pas de framework, pas de build : JS vanilla.

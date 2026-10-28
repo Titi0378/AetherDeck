@@ -1,5 +1,5 @@
 """
-Comprehensive Settings & Emulator Configuration Manager for OmniConsole.
+Comprehensive Settings & Emulator Configuration Manager for AetherDeck.
 Manages GPU selection, Graphics API (Vulkan/D3D11/D3D12/OpenGL), Internal Resolution (1x-4x),
 V-Sync, Anti-Aliasing, Audio Latency/Volume, CPU/Performance Profiles, and per-emulator
 config file generation (RetroArch, Dolphin 2609, Ryujinx 1.3.3, Caprice32, PUAE).

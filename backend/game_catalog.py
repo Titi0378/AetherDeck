@@ -1,5 +1,5 @@
 """
-Curated Multi-Console Game Catalog & Archive.org Collection Index for OmniConsole.
+Curated Multi-Console Game Catalog & Archive.org Collection Index for AetherDeck.
 Includes comprehensive Mario titles across NES, SNES, GBA, N64, Wii/GameCube, Switch,
 as well as iconic classics on Amstrad CPC, Commodore Amiga, Sega Mega Drive, and PlayStation 1.
 """

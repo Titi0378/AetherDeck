@@ -1,5 +1,5 @@
 """
-Centralized Emulator Engine Manager for OmniConsole.
+Centralized Emulator Engine Manager for AetherDeck.
 Handles automatic download, extraction, system BIOS/asset provisioning,
 controller config synchronization, and game execution across all consoles
 (Amstrad CPC, Commodore Amiga, NES, SNES, GBA, Mega Drive, N64, PS1, Wii/GameCube, Switch).

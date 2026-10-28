@@ -1,8 +1,8 @@
 """
-Multi-Source Game Search Engine, Downloader & Library Manager for OmniConsole.
+Multi-Source Game Search Engine, Downloader & Library Manager for AetherDeck.
 
 Integrates 5 distinct sources across all 10 consoles:
-1. Selection OmniConsole (Curated Catalog: Mario saga, iconic Amstrad, Amiga, Sega, PS1, Wii, Switch)
+1. Selection AetherDeck (Curated Catalog: Mario saga, iconic Amstrad, Amiga, Sega, PS1, Wii, Switch)
 2. Internet Archive (No-Intro / TOSEC full sets for NES, SNES, GBA, N64, Mega Drive, Amstrad CPC, Amiga, GameCube RVZ, PS1 CHD)
 3. Open Shop Channel Wii API (299 native Wii .dol games and applications)
 4. Switch Homebrew App Store API (189 native Switch .nro games and ports)
@@ -520,7 +520,7 @@ class GameSearchAndLibraryManager:
                     "summary": f"Fiche NxBrew pour « {clean_title} ». Téléchargement débloqué via Playwright sans redirection.",
                     "description": (
                         f"Jeu Nintendo Switch « {raw_title} » indexé depuis NxBrew. "
-                        f"OmniConsole extrait les packages (Jeu de base, Mises à jour, DLCs) "
+                        f"AetherDeck extrait les packages (Jeu de base, Mises à jour, DLCs) "
                         f"et utilise Playwright en arrière-plan pour résoudre les liens d'hébergeurs (1Fichier, DataNodes, MultiUp) "
                         f"sans popups ni redirections publicitaires."
                     ),
@@ -1379,7 +1379,7 @@ class GameSearchAndLibraryManager:
         else:
             _update(5, f"Connexion au serveur pour « {game['title']} »...")
             try:
-                headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) OmniConsole/1.0"}
+                headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AetherDeck/1.0"}
                 with requests.get(dl_url, headers=headers, stream=True, timeout=60, allow_redirects=True) as r:
                     r.raise_for_status()
                     ctype = (r.headers.get("Content-Type") or "").lower()

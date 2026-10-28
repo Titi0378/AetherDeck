@@ -1,5 +1,5 @@
 """
-Automated Cover Art Search, Fetcher & Cache Service for OmniConsole.
+Automated Cover Art Search, Fetcher & Cache Service for AetherDeck.
 
 Guarantees 100% authentic boxart coverage:
 1. Local disk cache in data/covers/{hash}.jpg
@@ -41,7 +41,7 @@ class CoverArtService:
         self.covers_dir = os.path.join(data_dir, "covers")
         os.makedirs(self.covers_dir, exist_ok=True)
         self.headers = {
-            "User-Agent": "OmniConsole/1.0 (Windows NT 10.0; Win64; x64; BoxArtFetcher; +support@omniconsole.local)"
+            "User-Agent": "AetherDeck/1.0 (Windows NT 10.0; Win64; x64; BoxArtFetcher; +support@aetherdeck.local)"
         }
 
     def _hash_key(self, title: str, console: str) -> str:

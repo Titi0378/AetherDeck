@@ -175,7 +175,7 @@ AetherDeck/
 ├── setup_engines.py             # Script d'installation automatique des 16 moteurs officiels
 ├── requirements.txt             # Dépendances Python (tornado, requests, playwright)
 ├── Lancer_AetherDeck.bat        # Raccourci de démarrage Windows en un clic
-├── Installer_Moteurs.bat        # Raccourci d'installation initiale des moteurs
+├── Lancer_AetherDeck.vbs        # Raccourci de démarrage silencieux Windows
 ├── LEGAL.md                     # Charte juridique complète (CPI Art. L122-5 / DMCA)
 ├── LICENSE                      # Licence Open-Source MIT
 ├── backend/
@@ -197,7 +197,7 @@ AetherDeck/
 │   ├── assets/                  # Bannière 16:9 et logos officiels pour GitHub
 │   └── screenshots/             # Captures d'écran haute définition de l'interface
 └── tests/
-    ├── test_omniconsole.py      # Suite de tests unitaires et d'intégration API (15 tests)
+    ├── test_aetherdeck.py       # Suite de tests unitaires et d'intégration API (16 tests)
     ├── test_launch_process.py   # Vérification du lancement réel des processus d'émulation
     └── verify_frontend.py       # Audit automatisé Playwright du DOM et absence d'erreurs
 ```
@@ -209,7 +209,7 @@ AetherDeck/
 Pour exécuter la suite complète de tests automatisés (vérification des 16 consoles, de la génération des configurations manettes, de la conformité de l'interface et du lancement des moteurs) :
 
 ```powershell
-python tests/test_omniconsole.py
+python tests/test_aetherdeck.py
 python tests/test_launch_process.py
 python tests/verify_frontend.py
 ```

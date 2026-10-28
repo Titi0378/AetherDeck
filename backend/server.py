@@ -1,5 +1,5 @@
 """
-OmniConsole Tornado Web/API Backend & Desktop Window Manager.
+AetherDeck Tornado Web/API Backend & Desktop Window Manager.
 Exposes REST endpoints for game search, downloading, library management,
 live controller polling & auto-configuration, PC hardware monitoring,
 native emulator launching, and comprehensive settings management.
@@ -221,7 +221,7 @@ class ImportLocalRomHandler(BaseAPIHandler):
                         "*.nes *.dsk *.adf *.adz *.lha *.zip *.7z"
                     )
                     p = filedialog.askopenfilename(
-                        title="Importer un jeu dans OmniConsole (Switch, NDS, 3DS, Wii, Rétro)",
+                        title="Importer un jeu dans AetherDeck (Switch, NDS, 3DS, Wii, Rétro)",
                         filetypes=[
                             ("Tous les jeux compatibles (NSP, NDS, 3DS, ISO, ROMs)", all_supported),
                             ("Nintendo Switch (*.nsp, *.xci, *.nro)", "*.nsp *.xci *.nro *.nca"),

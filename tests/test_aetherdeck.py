@@ -1,9 +1,9 @@
 """
-Comprehensive End-to-End Test Suite for OmniConsole.
+Comprehensive End-to-End Test Suite for AetherDeck.
 Verifies hardware monitoring, controller centralization & config generation,
-all 10 emulator engines (RetroArch, Dolphin, Ryujinx, Caprice32, PUAE),
+all 16 emulator engines (RetroArch, Dolphin, Ryujinx, Caprice32, PUAE, Stella, FBNeo, Flycast, PPSSPP),
 multi-source search, real game downloading, library persistence,
-settings panel with GPU selection, and HTTP APIs.
+settings panel with GPU selection, legal compliance API, and HTTP APIs.
 """
 
 import json
@@ -26,7 +26,7 @@ from backend.search_engine import GameSearchAndLibraryManager
 from backend.server import create_tornado_app
 
 
-class TestOmniConsoleEndToEnd(unittest.TestCase):
+class TestAetherDeckEndToEnd(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         import asyncio
