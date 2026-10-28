@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AetherDeck — Architecture d'Émulation &amp; Préservation Multi-Systèmes</title>
+  <link rel="icon" type="image/svg+xml" href="logo.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- =================== SVG ICONS SPRITE (ZÉRO EMOJI) =================== -->
+  <svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-console" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+      <path d="M6 12h4m-2-2v4"></path>
+      <circle cx="15.5" cy="10.5" r="1" fill="currentColor"></circle>
+      <circle cx="17.5" cy="13.5" r="1" fill="currentColor"></circle>
+    </symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="7"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </symbol>
+    <symbol id="icon-library" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+      <path d="M6 6h10m-10 4h10m-10 4h6"></path>
+    </symbol>
+    <symbol id="icon-gamepad" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="6" y1="12" x2="10" y2="12"></line>
+      <line x1="8" y1="10" x2="8" y2="14"></line>
+      <line x1="15" y1="13" x2="15.01" y2="13"></line>
+      <line x1="18" y1="11" x2="18.01" y2="11"></line>
+      <rect x="2" y="6" width="20" height="12" rx="4"></rect>
+    </symbol>
+    <symbol id="icon-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+      <rect x="9" y="9" width="6" height="6"></rect>
+      <line x1="9" y1="1" x2="9" y2="4"></line>
+      <line x1="15" y1="1" x2="15" y2="4"></line>
+      <line x1="9" y1="20" x2="9" y2="23"></line>
+      <line x1="15" y1="20" x2="15" y2="23"></line>
+      <line x1="20" y1="9" x2="23" y2="9"></line>
+      <line x1="20" y1="15" x2="23" y2="15"></line>
+      <line x1="1" y1="9" x2="4" y2="9"></line>
+      <line x1="1" y1="15" x2="4" y2="15"></line>
+    </symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
+    </symbol>
+    <symbol id="icon-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+    </symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+    </symbol>
+    <symbol id="icon-scan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 7V5a2 2 0 0 1 2-2h2m12 0h2a2 2 0 0 1 2 2v2m0 10v2a2 2 0 0 1-2 2h-2m-12 0H5a2 2 0 0 1-2-2v-2"></path>
+      <line x1="7" y1="12" x2="17" y2="12"></line>
+    </symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+    </symbol>
+    <symbol id="icon-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+      <polyline points="15 3 21 3 21 9"></polyline>
+      <line x1="10" y1="14" x2="21" y2="3"></line>
+    </symbol>
+    <symbol id="icon-help" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+      <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="23 4 23 10 17 10"></polyline>
+      <polyline points="1 20 1 14 7 14"></polyline>
+      <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+    </symbol>
+    <symbol id="icon-monitor" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+      <line x1="8" y1="21" x2="16" y2="21"></line>
+      <line x1="12" y1="17" x2="12" y2="21"></line>
+    </symbol>
+    <symbol id="icon-volume" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    </symbol>
+  </svg>
+
+  <div class="app-shell">
+    <!-- =================== SIDEBAR =================== -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-logo" style="padding: 0; overflow: hidden; background: transparent; border: none;">
+          <img src="logo.svg" alt="AetherDeck Logo" style="width: 38px; height: 38px; display: block;" />
+        </div>
+        <div>
+          <div class="brand-title">AetherDeck</div>
+          <div class="brand-subtitle">Studio d'Émulation Multi-Systèmes</div>
+        </div>
+      </div>
+
+      <nav class="nav-list">
+        <button class="nav-btn active" data-view="discover" onclick="switchView('discover')">
+          <span class="nav-btn-left">
+            <svg class="svg-icon"><use href="#icon-search"></use></svg>
+            <span>Rechercher & Explorer</span>
+          </span>
+          <span class="nav-badge" id="nav-catalog-count">0</span>
+        </button>
+
+        <button class="nav-btn" data-view="library" onclick="switchView('library')">
+          <span class="nav-btn-left">
+            <svg class="svg-icon"><use href="#icon-library"></use></svg>
+            <span>Ma Bibliothèque</span>
+          </span>
+          <span class="nav-badge" id="nav-library-count">0</span>
+        </button>
+
+        <button class="nav-btn" data-view="engines" onclick="switchView('engines')">
+          <span class="nav-btn-left">
+            <svg class="svg-icon"><use href="#icon-cpu"></use></svg>
+            <span>Moteurs &amp; Émulateurs</span>
+          </span>
+          <span class="nav-badge" id="nav-engines-count">16</span>
+        </button>
+
+        <button class="nav-btn" data-view="controllers" onclick="switchView('controllers')">
+          <span class="nav-btn-left">
+            <svg class="svg-icon"><use href="#icon-gamepad"></use></svg>
+            <span>Manettes & Contrôles</span>
+          </span>
+          <span class="nav-badge" id="nav-controllers-count">1</span>
+        </button>
+
+        <button class="nav-btn" data-view="settings" onclick="switchView('settings')">
+          <span class="nav-btn-left">
+            <svg class="svg-icon"><use href="#icon-settings"></use></svg>
+            <span>Configuration</span>
+          </span>
+        </button>
+      </nav>
+
+      <!-- Active Downloads Bar in Sidebar -->
+      <div id="sidebar-downloads-box" class="sidebar-downloads-box" style="display: none;">
+        <div class="status-row" style="margin-bottom: 6px;">
+          <span style="display: flex; align-items: center; gap: 6px; font-weight: 600;">
+            <svg class="svg-icon" style="width: 14px; height: 14px;"><use href="#icon-download"></use></svg>
+            <span id="sidebar-downloads-title">Téléchargement</span>
+          </span>
+          <span id="sidebar-downloads-pct" style="font-weight: 700; color: var(--accent-primary);">0%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="sidebar-downloads-bar" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div id="sidebar-downloads-msg" class="downloads-msg-text">En attente...</div>
+      </div>
+
+      <!-- Live Sidebar Status -->
+      <div class="sidebar-status-box">
+        <div class="status-row">
+          <span class="status-label">Manette</span>
+          <strong id="sidebar-gamepad-status" class="status-value text-success">Détectée</strong>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Profil PC</span>
+          <strong id="sidebar-pc-tier" class="status-value">Détection...</strong>
+        </div>
+        <div class="status-row">
+          <span class="status-label">Moteurs</span>
+          <strong id="sidebar-engines-ready" class="status-value">16 / 16</strong>
+        </div>
+        <button class="btn-text-action" onclick="openLegalConsentModal()" style="margin-top: 8px; width: 100%;">
+          <svg class="svg-icon" style="width: 14px; height: 14px;"><use href="#icon-check"></use></svg>
+          <span id="sidebar-legal-status-label">Charte Légale &amp; Sources</span>
+        </button>
+        <button class="btn-text-action" onclick="openTutorialModal()" style="margin-top: 6px; width: 100%;">
+          <svg class="svg-icon" style="width: 14px; height: 14px;"><use href="#icon-help"></use></svg>
+          <span>Tutoriel de démarrage</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- =================== MAIN CONTENT =================== -->
+    <div class="main-area">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="search-bar-wrap">
+          <svg class="svg-icon search-icon"><use href="#icon-search"></use></svg>
+          <input
+            type="text"
+            id="global-search-input"
+            class="search-input"
+            placeholder="Rechercher parmi des milliers de jeux (ex: Mario, Zelda, Sonic, Lemmings, Crash...)"
+            autocomplete="off"
+          />
+          <button id="search-clear-btn" class="search-clear-btn" onclick="clearSearch()" title="Effacer la recherche">
+            <svg class="svg-icon" style="width: 14px; height: 14px;"><use href="#icon-close"></use></svg>
+          </button>
+        </div>
+
+        <div class="header-actions">
+          <button id="header-legal-btn" class="pill-btn" onclick="openLegalConsentModal()" title="Gérer le consentement légal et l'accès aux sources tierces">
+            <svg class="svg-icon"><use href="#icon-check"></use></svg>
+            <span id="header-legal-btn-text">Sources : Mode Vérifié</span>
+          </button>
+          <button class="pill-btn" onclick="openScanDownloadsModal()" title="Rechercher des ROMs dans votre dossier Téléchargements Windows">
+            <svg class="svg-icon"><use href="#icon-scan"></use></svg>
+            <span>Scanner Téléchargements</span>
+          </button>
+          <button class="pill-btn" onclick="openImportDialog()" title="Ajouter un fichier ROM ou ISO local">
+            <svg class="svg-icon"><use href="#icon-folder"></use></svg>
+            <span>Importer</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- ================= 1. VIEW: DISCOVER & SEARCH ================= -->
+      <main id="view-discover" class="view-section active">
+        <div class="filters-container">
+          <!-- Quick search queries -->
+          <div class="quick-search-row">
+            <span class="quick-label">Recherches rapides :</span>
+            <button class="chip" onclick="triggerQuickSearch('Mario')">Mario</button>
+            <button class="chip" onclick="triggerQuickSearch('Pokemon')">Pokémon</button>
+            <button class="chip" onclick="triggerQuickSearch('Zelda')">Zelda</button>
+            <button class="chip" onclick="triggerQuickSearch('Sonic')">Sonic</button>
+            <button class="chip" onclick="triggerQuickSearch('Crash')">Crash Bandicoot</button>
+            <button class="chip" onclick="triggerQuickSearch('Amstrad')">Amstrad CPC</button>
+            <button class="chip" onclick="triggerQuickSearch('Amiga')">Amiga</button>
+            <button class="chip" onclick="triggerQuickSearch('Kart')">Course / Kart</button>
+            <button class="chip" onclick="triggerQuickSearch('')">Tout afficher</button>
+          </div>
+
+          <!-- Console & Multi-Source Filters -->
+          <div class="filter-bar-split">
+            <div class="console-chips" id="console-filter-chips">
+              <button class="chip active" data-console="all" onclick="setConsoleFilter('all')">Toutes</button>
+              <button class="chip" data-console="atari2600" onclick="setConsoleFilter('atari2600')">Atari 2600</button>
+              <button class="chip" data-console="arcade" onclick="setConsoleFilter('arcade')">Arcade / Neo Geo</button>
+              <button class="chip" data-console="nes" onclick="setConsoleFilter('nes')">NES</button>
+              <button class="chip" data-console="snes" onclick="setConsoleFilter('snes')">SNES</button>
+              <button class="chip" data-console="nds" onclick="setConsoleFilter('nds')">DS</button>
+              <button class="chip" data-console="3ds" onclick="setConsoleFilter('3ds')">3DS</button>
+              <button class="chip" data-console="gba" onclick="setConsoleFilter('gba')">GBA</button>
+              <button class="chip" data-console="megadrive" onclick="setConsoleFilter('megadrive')">Mega Drive</button>
+              <button class="chip" data-console="n64" onclick="setConsoleFilter('n64')">N64</button>
+              <button class="chip" data-console="ps1" onclick="setConsoleFilter('ps1')">PlayStation 1</button>
+              <button class="chip" data-console="psp" onclick="setConsoleFilter('psp')">PSP</button>
+              <button class="chip" data-console="dreamcast" onclick="setConsoleFilter('dreamcast')">Dreamcast</button>
+              <button class="chip" data-console="amstrad_cpc" onclick="setConsoleFilter('amstrad_cpc')">Amstrad</button>
+              <button class="chip" data-console="amiga" onclick="setConsoleFilter('amiga')">Amiga</button>
+              <button class="chip" data-console="wii" onclick="setConsoleFilter('wii')">Wii / GC</button>
+              <button class="chip" data-console="switch" onclick="setConsoleFilter('switch')">Switch</button>
+            </div>
+
+            <div class="select-filters-row">
+              <select id="source-filter-select" class="clean-select" onchange="setSourceFilter(this.value)">
+                <option value="all">Sources : Toutes (Sources officielles + activées)</option>
+                <option value="curated">Sélection AetherDeck (16 consoles)</option>
+                <option value="archive_org">Internet Archive (16 consoles)</option>
+                <option value="osc_wii">Open Shop Channel (Wii)</option>
+                <option value="switch_hb">Switch Homebrew App Store</option>
+                <option value="nxbrew">NxBrew (Source Externe Tierce — Consentement requis)</option>
+                <option value="smallgames">SmallGames.ch (Source Externe Tierce — Consentement requis)</option>
+              </select>
+
+              <select id="weight-filter-select" class="clean-select" onchange="setWeightFilter(this.value)">
+                <option value="all">Ressources : Tous niveaux</option>
+                <option value="leger">Émulateurs Légers (Atari, Arcade, NES, SNES, GBA, MD, DS, CPC, Amiga)</option>
+                <option value="moyen">Émulateurs Moyens (N64, PS1, PSP, Dreamcast, 3DS)</option>
+                <option value="lourd">Émulateurs Lourds (Nintendo Wii, GameCube, Switch)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-header">
+          <div>
+            <h1 class="section-title" id="discover-heading">Catalogue & Recherche Multi-Consoles</h1>
+            <p class="section-subtitle" id="discover-subheading">
+              Sélectionnez un jeu pour consulter sa fiche détaillée, ses contrôles et le télécharger en un clic.
+            </p>
+          </div>
+          <div id="search-results-count" class="results-count-badge">0 résultat</div>
+        </div>
+
+        <div class="games-grid" id="discover-games-grid"></div>
+
+        <div id="load-more-container" class="load-more-container" style="display: none;">
+          <button id="load-more-btn" class="pill-btn primary" onclick="loadMoreGames()">
+            <span>Charger plus de jeux</span>
+          </button>
+        </div>
+      </main>
+
+      <!-- ================= 2. VIEW: MY LIBRARY ================= -->
+      <section id="view-library" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Ma Bibliothèque</h1>
+            <p class="section-subtitle">
+              Jeux installés sur votre PC. Cliquez sur « Lancer » pour démarrer avec les manettes préconfigurées.
+            </p>
+          </div>
+          <div class="header-actions">
+            <button class="pill-btn" onclick="openFolder('roms')">
+              <svg class="svg-icon"><use href="#icon-folder"></use></svg>
+              <span>Ouvrir dossier des jeux</span>
+            </button>
+            <button class="pill-btn primary" onclick="openImportDialog()">
+              <svg class="svg-icon"><use href="#icon-scan"></use></svg>
+              <span>Importer un jeu</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="library-filter-bar">
+          <div class="console-chips" id="library-console-chips">
+            <button class="chip active" data-console="all" onclick="setLibraryConsoleFilter('all')">Tous les jeux</button>
+            <button class="chip" data-console="atari2600" onclick="setLibraryConsoleFilter('atari2600')">Atari 2600</button>
+            <button class="chip" data-console="arcade" onclick="setLibraryConsoleFilter('arcade')">Arcade / Neo Geo</button>
+            <button class="chip" data-console="amstrad_cpc" onclick="setLibraryConsoleFilter('amstrad_cpc')">Amstrad CPC</button>
+            <button class="chip" data-console="amiga" onclick="setLibraryConsoleFilter('amiga')">Amiga</button>
+            <button class="chip" data-console="nes" onclick="setLibraryConsoleFilter('nes')">NES</button>
+            <button class="chip" data-console="snes" onclick="setLibraryConsoleFilter('snes')">SNES</button>
+            <button class="chip" data-console="nds" onclick="setLibraryConsoleFilter('nds')">DS</button>
+            <button class="chip" data-console="3ds" onclick="setLibraryConsoleFilter('3ds')">3DS</button>
+            <button class="chip" data-console="gba" onclick="setLibraryConsoleFilter('gba')">GBA</button>
+            <button class="chip" data-console="megadrive" onclick="setLibraryConsoleFilter('megadrive')">Mega Drive</button>
+            <button class="chip" data-console="n64" onclick="setLibraryConsoleFilter('n64')">N64</button>
+            <button class="chip" data-console="ps1" onclick="setLibraryConsoleFilter('ps1')">PS1</button>
+            <button class="chip" data-console="psp" onclick="setLibraryConsoleFilter('psp')">PSP</button>
+            <button class="chip" data-console="dreamcast" onclick="setLibraryConsoleFilter('dreamcast')">Dreamcast</button>
+            <button class="chip" data-console="wii" onclick="setLibraryConsoleFilter('wii')">Wii / GC</button>
+            <button class="chip" data-console="switch" onclick="setLibraryConsoleFilter('switch')">Switch</button>
+          </div>
+        </div>
+
+        <div class="games-grid" id="library-games-grid"></div>
+
+        <div id="library-empty-state" class="empty-state" style="display: none;">
+          <svg class="svg-icon empty-icon"><use href="#icon-library"></use></svg>
+          <h3>Votre bibliothèque est encore vide</h3>
+          <p>Recherchez un jeu dans l'onglet « Rechercher » ou importez vos propres fichiers ROM / ISO.</p>
+          <div style="margin-top: 16px; display: flex; gap: 10px;">
+            <button class="pill-btn primary" onclick="switchView('discover')">Explorer le catalogue</button>
+            <button class="pill-btn" onclick="openScanDownloadsModal()">Scanner mes Téléchargements</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 3. VIEW: EMULATOR ENGINES ================= -->
+      <section id="view-engines" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Moteurs d'Émulation & Diagnostic PC</h1>
+            <p class="section-subtitle">
+              Gestion centralisée des 16 moteurs installés. Vous pouvez ouvrir l'interface native de chaque émulateur ou lancer un test.
+            </p>
+          </div>
+          <button class="pill-btn" onclick="openFolder('emulators')">
+            <svg class="svg-icon"><use href="#icon-folder"></use></svg>
+            <span>Dossier des émulateurs</span>
+          </button>
+        </div>
+
+        <!-- PC Hardware Overview Card -->
+        <div class="hardware-overview-card" id="hardware-overview-card">
+          <div class="hardware-overview-header">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <svg class="svg-icon text-accent"><use href="#icon-monitor"></use></svg>
+              <div>
+                <strong id="hw-cpu-name">Processeur Windows</strong>
+                <div id="hw-gpu-name" class="text-secondary" style="font-size: 12px;">Carte Graphique</div>
+              </div>
+            </div>
+            <div id="hw-tier-badge" class="badge-tag">Analyse du PC...</div>
+          </div>
+          <div class="hardware-overview-grid">
+            <div class="hw-metric">
+              <span class="hw-metric-label">Mémoire Vive (RAM)</span>
+              <strong id="hw-ram-metric" class="hw-metric-val">-- Go</strong>
+            </div>
+            <div class="hw-metric">
+              <span class="hw-metric-label">Cœurs Processeur</span>
+              <strong id="hw-cores-metric" class="hw-metric-val">-- cœurs</strong>
+            </div>
+            <div class="hw-metric">
+              <span class="hw-metric-label">Recommandation</span>
+              <strong id="hw-advice-metric" class="hw-metric-val">Tous émulateurs fluides</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="engines-grid" id="engines-grid"></div>
+      </section>
+
+      <!-- ================= 4. VIEW: CONTROLLERS & REMAPPING ================= -->
+      <section id="view-controllers" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Manettes & Affectation des Touches</h1>
+            <p class="section-subtitle">
+              Configurez vos manettes Xbox, PlayStation, Nintendo Switch ou Clavier. Les réglages sont appliqués en temps réel à tous les moteurs.
+            </p>
+          </div>
+          <div class="header-actions">
+            <button class="pill-btn" onclick="resetControllerProfile()">
+              <svg class="svg-icon"><use href="#icon-refresh"></use></svg>
+              <span>Réinitialiser</span>
+            </button>
+            <button class="pill-btn primary" onclick="syncControllers()">
+              <svg class="svg-icon"><use href="#icon-check"></use></svg>
+              <span>Appliquer aux émulateurs</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Detected Controllers Card -->
+        <div class="settings-card">
+          <h2 class="card-heading">Périphériques Détectés en Temps Réel</h2>
+          <div class="connected-controllers-list" id="connected-controllers-list"></div>
+        </div>
+
+        <!-- Profiles & Layout Swap Card -->
+        <div class="settings-card">
+          <h2 class="card-heading">Profil de Disposition</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="controller-profile-select">Profil Actif</label>
+              <select id="controller-profile-select" class="clean-select" onchange="changeControllerProfile(this.value)">
+                <option value="xbox_standard">Disposition Standard Xbox / PC (A en bas, B à droite)</option>
+                <option value="nintendo_layout">Disposition Nintendo Fidèle (B en bas, A à droite, Y à gauche, X en haut)</option>
+                <option value="playstation_layout">Disposition Sony PlayStation (Croix en bas, Rond à droite)</option>
+                <option value="retro_amstrad_amiga">Joystick Micro-Ordinateur Rétro (Amstrad CPC / Amiga)</option>
+              </select>
+              <div id="profile-description" class="form-help-text">Description du profil</div>
+            </div>
+
+            <div class="form-group checkbox-group" style="padding-top: 24px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="swap-ab-xy-checkbox" onchange="toggleSwapButtons(this.checked)" />
+                <span>Inverser A / B et X / Y (Position Nintendo)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Per-Button Key Remapper -->
+        <div class="settings-card">
+          <div class="card-header-flex">
+            <div>
+              <h2 class="card-heading">Remappage Touche par Touche</h2>
+              <p class="form-help-text">Cliquez sur une case pour réassigner une touche au clavier ou un bouton de manette.</p>
+            </div>
+            <div id="remap-active-hint" class="remap-active-hint" style="display: none;">
+              Appuyez sur une touche du clavier ou un bouton de manette...
+            </div>
+          </div>
+
+          <div class="remapper-table-wrapper">
+            <table class="remapper-table">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Action Console</th>
+                  <th style="width: 37%;">Touche Clavier</th>
+                  <th style="width: 38%;">Bouton Manette</th>
+                </tr>
+              </thead>
+              <tbody id="remapper-table-body">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. VIEW: COMPLETE SETTINGS PANEL ================= -->
+      <section id="view-settings" class="view-section">
+        <div class="section-header">
+          <div>
+            <h1 class="section-title">Panneau de Configuration Complet</h1>
+            <p class="section-subtitle">
+              Personnalisation graphique, sélection du GPU, profil de performance, options audio et sources de téléchargement.
+            </p>
+          </div>
+          <div class="header-actions">
+            <button class="pill-btn danger" onclick="resetAllSettings()">
+              <svg class="svg-icon"><use href="#icon-refresh"></use></svg>
+              <span>Valeurs par défaut</span>
+            </button>
+            <button class="pill-btn primary" onclick="saveAllSettings()">
+              <svg class="svg-icon"><use href="#icon-check"></use></svg>
+              <span>Enregistrer</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Settings Sub-Navigation Tabs -->
+        <div class="settings-tabs-bar">
+          <button class="tab-btn active" data-tab="tab-graphics" onclick="switchSettingsTab('tab-graphics')">
+            <svg class="svg-icon"><use href="#icon-monitor"></use></svg>
+            <span>Graphismes & GPU</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-performance" onclick="switchSettingsTab('tab-performance')">
+            <svg class="svg-icon"><use href="#icon-cpu"></use></svg>
+            <span>Performance & Audio</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-advanced-input" onclick="switchSettingsTab('tab-advanced-input')">
+            <svg class="svg-icon"><use href="#icon-gamepad"></use></svg>
+            <span>Entrées Avancées</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-sources" onclick="switchSettingsTab('tab-sources')">
+            <svg class="svg-icon"><use href="#icon-download"></use></svg>
+            <span>Sources de Recherche</span>
+          </button>
+          <button class="tab-btn" data-tab="tab-system" onclick="switchSettingsTab('tab-system')">
+            <svg class="svg-icon"><use href="#icon-folder"></use></svg>
+            <span>Dossiers & Système</span>
+          </button>
+        </div>
+
+        <!-- TAB 1: GRAPHICS & GPU -->
+        <div id="tab-graphics" class="settings-tab-pane active">
+          <div class="settings-card">
+            <h2 class="card-heading">Rendu Vidéo & Carte Graphique</h2>
+            <div class="settings-form-grid">
+              <div class="form-group">
+                <label class="form-label" for="setting-preferred-gpu">Carte Graphique (GPU)</label>
+                <select id="setting-preferred-gpu" class="clean-select"></select>
+                <div class="form-help-text">Sélectionnez votre carte dédiée NVIDIA/AMD ou laissez en Détection Auto.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-video-backend">API Graphique</label>
+                <select id="setting-video-backend" class="clean-select">
+                  <option value="vulkan">Vulkan (Recommandé — Moderne & Très rapide)</option>
+                  <option value="d3d11">Direct3D 11 (Compatibilité maximale Windows)</option>
+                  <option value="d3d12">Direct3D 12 (Windows 10/11)</option>
+                  <option value="gl">OpenGL (Anciennes configurations)</option>
+                </select>
+                <div class="form-help-text">Synchronisé avec RetroArch, Dolphin et Ryujinx.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-internal-res">Résolution Interne</label>
+                <select id="setting-internal-res" class="clean-select">
+                  <option value="1">1x Native (720p / Résolution originale)</option>
+                  <option value="2">2x HD (1080p — Recommandé PC Standard)</option>
+                  <option value="3">3x Quad HD (1440p 2K)</option>
+                  <option value="4">4x Ultra HD (2160p 4K)</option>
+                </select>
+                <div class="form-help-text">Augmente la netteté 3D (Wii, Switch, N64, PS1).</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-aspect-ratio">Ratio d'Aspect</label>
+                <select id="setting-aspect-ratio" class="clean-select">
+                  <option value="auto">Automatique (Selon console)</option>
+                  <option value="16:9">Plein écran 16:9</option>
+                  <option value="4:3">Format Original 4:3</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-anti-aliasing">Anti-Aliasing</label>
+                <select id="setting-anti-aliasing" class="clean-select">
+                  <option value="None">Désactivé</option>
+                  <option value="FXAA">FXAA (Très léger)</option>
+                  <option value="2x MSAA">2x MSAA (Lissage net)</option>
+                  <option value="4x MSAA">4x MSAA (Qualité maximale)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-anisotropic">Filtrage Anisotrope</label>
+                <select id="setting-anisotropic" class="clean-select">
+                  <option value="1">1x (Désactivé)</option>
+                  <option value="2">2x</option>
+                  <option value="4">4x (Équilibré)</option>
+                  <option value="8">8x</option>
+                  <option value="16">16x (Ultra-net sur les textures distantes)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-texture-filtering">Filtrage des Textures</label>
+                <select id="setting-texture-filtering" class="clean-select">
+                  <option value="bilinear">Bilinéaire (Doux et propre)</option>
+                  <option value="nearest">Plus proche voisin (Pixel art rétro net)</option>
+                  <option value="fsr">AMD FSR (Super-résolution intelligente)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-window-res">Résolution de Fenêtre</label>
+                <select id="setting-window-res" class="clean-select">
+                  <option value="1280x720">1280 x 720 (720p)</option>
+                  <option value="1600x900">1600 x 900 (900p)</option>
+                  <option value="1920x1080">1920 x 1080 (1080p)</option>
+                  <option value="2560x1440">2560 x 1440 (1440p)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="checkbox-grid" style="margin-top: 16px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-vsync" />
+                <span>Synchronisation verticale (V-Sync anti-déchirement)</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-fullscreen" />
+                <span>Démarrer les jeux directement en plein écran</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-fps-osd" />
+                <span>Afficher le compteur d'images par seconde (FPS OSD)</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-shader-cache" />
+                <span>Cache de compilation des shaders (évite les micro-saccades)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: PERFORMANCE & AUDIO -->
+        <div id="tab-performance" class="settings-tab-pane">
+          <div class="settings-card">
+            <h2 class="card-heading">Profil de Performance PC</h2>
+            <div class="settings-form-grid">
+              <div class="form-group">
+                <label class="form-label" for="setting-power-profile">Profil Énergétique</label>
+                <select id="setting-power-profile" class="clean-select">
+                  <option value="auto">Automatique (Adapté au processeur et GPU)</option>
+                  <option value="eco">Mode Éco PC Léger (Très faible consommation)</option>
+                  <option value="balanced">Équilibré (Standard)</option>
+                  <option value="ultra">Haute Performance (Fréquences maximales)</option>
+                </select>
+                <div class="form-help-text">Le Mode Éco désactive les calculs superflus pour garantir 60 FPS sur PC légers.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-cpu-jit">Mode Compilateur CPU (JIT)</label>
+                <select id="setting-cpu-jit" class="clean-select">
+                  <option value="fast">Rapide (Recommandé)</option>
+                  <option value="accurate">Précis (Compatibilité spécifique)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-frame-limit">Vitesse d'Émulation</label>
+                <select id="setting-frame-limit" class="clean-select">
+                  <option value="100">100% (Vitesse normale)</option>
+                  <option value="120">120% (Légèrement accéléré)</option>
+                  <option value="150">150% (Accéléré)</option>
+                  <option value="0">Illimitée</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-audio-backend">Backend Audio</label>
+                <select id="setting-audio-backend" class="clean-select">
+                  <option value="xaudio2">XAudio2 (Standard Windows faible latence)</option>
+                  <option value="sdl2">SDL2 Audio</option>
+                  <option value="wasapi">Windows WASAPI</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-top: 16px;">
+              <div class="form-group" style="flex: 1;">
+                <label class="form-label" for="setting-audio-volume">Volume Audio (<span id="setting-audio-volume-val">90</span>%)</label>
+                <input type="range" id="setting-audio-volume" min="0" max="100" value="90" class="clean-range" oninput="document.getElementById('setting-audio-volume-val').innerText = this.value" />
+              </div>
+
+              <div class="form-group" style="flex: 1;">
+                <label class="form-label" for="setting-audio-latency">Latence Audio (Tampon)</label>
+                <select id="setting-audio-latency" class="clean-select">
+                  <option value="32">32 ms (Latence ultra-faible)</option>
+                  <option value="64">64 ms (Recommandé — Très stable)</option>
+                  <option value="96">96 ms (PC plus anciens)</option>
+                  <option value="128">128 ms (Anti-craquement)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="checkbox-grid" style="margin-top: 14px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-audio-mute" />
+                <span>Couper le son</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-threaded-video" />
+                <span>Vidéo threadée (Fluidité améliorée sur PC à cœurs multiples)</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: ADVANCED INPUT & MODES -->
+        <div id="tab-advanced-input" class="settings-tab-pane">
+          <div class="settings-card">
+            <h2 class="card-heading">Sticks, Zones Mortes & Vibration</h2>
+            <div class="settings-form-grid">
+              <div class="form-group">
+                <label class="form-label" for="setting-deadzone-left">Zone Morte Stick Gauche (<span id="setting-deadzone-left-val">15</span>%)</label>
+                <input type="range" id="setting-deadzone-left" min="0" max="40" value="15" class="clean-range" oninput="document.getElementById('setting-deadzone-left-val').innerText = this.value" />
+                <div class="form-help-text">Évite la dérive involontaire du joystick.</div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-deadzone-right">Zone Morte Stick Droit (<span id="setting-deadzone-right-val">15</span>%)</label>
+                <input type="range" id="setting-deadzone-right" min="0" max="40" value="15" class="clean-range" oninput="document.getElementById('setting-deadzone-right-val').innerText = this.value" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-vibration-strength">Intensité Vibration (<span id="setting-vibration-strength-val">85</span>%)</label>
+                <input type="range" id="setting-vibration-strength" min="0" max="100" value="85" class="clean-range" oninput="document.getElementById('setting-vibration-strength-val').innerText = this.value" />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-trigger-threshold">Sensibilité Gâchettes L2 / R2</label>
+                <select id="setting-trigger-threshold" class="clean-select">
+                  <option value="0.25">Haute réactivité (25%)</option>
+                  <option value="0.50">Standard (50%)</option>
+                  <option value="0.75">Course profonde (75%)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="checkbox-grid" style="margin-top: 14px;">
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-vibration-enabled" checked />
+                <span>Activer les moteurs de vibration (Rumble)</span>
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="setting-analog-to-dpad" checked />
+                <span>Convertir le stick analogique en croix directionnelle pour les jeux 2D rétro</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-card">
+            <h2 class="card-heading">Modes Spécifiques par Console</h2>
+            <div class="settings-form-grid">
+              <div class="form-group">
+                <label class="form-label" for="setting-wii-mode">Mode Manette Wii (Dolphin)</label>
+                <select id="setting-wii-mode" class="clean-select">
+                  <option value="wiimote_nunchuk">Wiimote + Nunchuk émulés (Recommandé)</option>
+                  <option value="wiimote_horizontal">Wiimote Horizontale (Idéal jeux 2D Mario)</option>
+                  <option value="classic">Manette Classique Wii</option>
+                  <option value="gc">Manette GameCube directe</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-switch-mode">Type Manette Switch (Ryujinx)</label>
+                <select id="setting-switch-mode" class="clean-select">
+                  <option value="ProController">Nintendo Switch Pro Controller (Recommandé)</option>
+                  <option value="JoyconPair">Paire de Joy-Cons</option>
+                  <option value="Handheld">Mode Portable (Console en main)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-amstrad-mode">Entrée Amstrad CPC (Caprice32)</label>
+                <select id="setting-amstrad-mode" class="clean-select">
+                  <option value="joystick">Joystick Port 1 (AutoRun activé)</option>
+                  <option value="keyboard">Clavier Amstrad direct</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="setting-amiga-mode">Entrée Amiga Port 1 (PUAE)</label>
+                <select id="setting-amiga-mode" class="clean-select">
+                  <option value="joystick">Joystick Rétro / Manette (Bouton saut activé)</option>
+                  <option value="mouse">Souris Amiga (Jeux stratégie / Point &amp; Click)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: SEARCH SOURCES & PRIVACY -->
+        <div id="tab-sources" class="settings-tab-pane">
+          <div class="settings-card">
+            <div class="card-header-flex" style="margin-bottom: 12px;">
+              <div>
+                <h2 class="card-heading">Moteurs et Fournisseurs de Téléchargement</h2>
+                <p class="form-help-text">
+                  Activez ou désactivez les serveurs et catalogues intégrés dans la barre de recherche globale.
+                </p>
+              </div>
+              <button class="pill-btn" onclick="openLegalConsentModal()">
+                <svg class="svg-icon"><use href="#icon-info"></use></svg>
+                <span>Charte Légale &amp; Droit d'Auteur</span>
+              </button>
+            </div>
+
+            <div class="sources-list-grid">
+              <div class="source-toggle-item">
+                <div class="source-info">
+                  <strong>Internet Archive (No-Intro / Redump / TOSEC — 16 Consoles)</strong>
+                  <p>Collections d'archives numériques sans publicité pour Atari 2600, Arcade/Neo Geo, NES, SNES, GBA, DS, 3DS, N64, Mega Drive, CPC, Amiga, PS1, PSP, Dreamcast et Wii/GameCube.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-src-archive" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="source-toggle-item">
+                <div class="source-info">
+                  <strong>Open Shop Channel (Wii — Homebrew Officiel)</strong>
+                  <p>299 jeux et applications homebrew libres Nintendo Wii (.dol) téléchargeables directement en HTTPS.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-src-osc" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="source-toggle-item">
+                <div class="source-info">
+                  <strong>Switch Homebrew App Store (Homebrew Officiel)</strong>
+                  <p>189 jeux et portages libres Nintendo Switch (.nro) hébergés sur CDN sécurisé.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-src-switch-hb" checked />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="source-toggle-item">
+                <div class="source-info">
+                  <strong>NxBrew (Source Externe Tierce — Consentement Utilisateur Requis)</strong>
+                  <p>Indexeur tiers indépendant non affilié à AetherDeck. Désactivé par défaut conformément à la charte sur le droit d'auteur. Nécessite l'acceptation explicite de la clause de responsabilité utilisateur.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-src-nxbrew" onchange="onToggleExternalSource(this, 'nxbrew')" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+
+              <div class="source-toggle-item">
+                <div class="source-info">
+                  <strong>SmallGames.ch (Source Externe Tierce — Consentement Utilisateur Requis)</strong>
+                  <p>Indexeur web externe indépendant non affilié à AetherDeck. Désactivé par défaut. Les liens sont ouverts dans votre navigateur externe uniquement après validation de la charte légale.</p>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" id="setting-src-smallgames" onchange="onToggleExternalSource(this, 'smallgames')" />
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="source-security-callout">
+              <div style="font-weight: 700; margin-bottom: 4px;">Conformité Légale, Sécurité HTTPS &amp; Absence de Fichiers Propriétaires :</div>
+              <p>
+                AetherDeck est distribué sans aucun fichier ROM commercial, BIOS propriétaire ou clé cryptographique.
+                Les dépôts activés par défaut (Open Shop Channel, Switch Homebrew App Store et archives publiques Internet Archive) utilisent exclusivement des connexions HTTPS vérifiées sans exécutables tiers.
+                Les indexeurs externes tiers (NxBrew, SmallGames.ch) sont désactivés par défaut et soumis au consentement explicite de l'utilisateur sous son entière responsabilité légale (exception de copie privée — Art. L122-5 du CPI).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: SYSTEM & FOLDERS -->
+        <div id="tab-system" class="settings-tab-pane">
+          <div class="settings-card">
+            <h2 class="card-heading">Dossiers de Stockage &amp; Emplacements</h2>
+            <div class="folders-action-grid">
+              <div class="folder-action-card">
+                <div>
+                  <strong>Dossier des Jeux &amp; ROMs</strong>
+                  <p>Emplacement de stockage où sont téléchargés vos jeux par console.</p>
+                </div>
+                <button class="pill-btn" onclick="openFolder('roms')">
+                  <svg class="svg-icon"><use href="#icon-folder"></use></svg>
+                  <span>Ouvrir dans l'Explorateur</span>
+                </button>
+              </div>
+
+              <div class="folder-action-card">
+                <div>
+                  <strong>Dossier des Moteurs d'Émulation</strong>
+                  <p>RetroArch, Dolphin Portable, Ryujinx Portable et fichiers de configuration.</p>
+                </div>
+                <button class="pill-btn" onclick="openFolder('emulators')">
+                  <svg class="svg-icon"><use href="#icon-cpu"></use></svg>
+                  <span>Ouvrir dans l'Explorateur</span>
+                </button>
+              </div>
+
+              <div class="folder-action-card">
+                <div>
+                  <strong>Dossier Téléchargements Windows</strong>
+                  <p>Votre dossier de téléchargements habituel sur ce PC.</p>
+                </div>
+                <button class="pill-btn" onclick="openFolder('downloads')">
+                  <svg class="svg-icon"><use href="#icon-download"></use></svg>
+                  <span>Ouvrir dans l'Explorateur</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- =================== MODAL: GAME DETAILS =================== -->
+  <div id="game-detail-modal" class="modal-backdrop" onclick="closeGameDetailModal(event)">
+    <div class="modal-card modal-game-detail" onclick="event.stopPropagation()">
+      <button class="modal-close-btn" onclick="closeGameDetailModal()" title="Fermer">
+        <svg class="svg-icon"><use href="#icon-close"></use></svg>
+      </button>
+
+      <div class="game-detail-body">
+        <div class="game-detail-cover-col">
+          <img id="detail-cover-img" class="game-detail-cover" src="" alt="Pochette du jeu" />
+          <div id="detail-console-badge" class="badge-tag" style="margin-top: 12px; align-self: center;">CONSOLE</div>
+        </div>
+
+        <div class="game-detail-info-col">
+          <h2 id="detail-title" class="game-detail-title">Titre du jeu</h2>
+          <div class="game-detail-meta" id="detail-meta-row">
+            <span id="detail-developer">Développeur</span>
+            <span class="meta-dot"></span>
+            <span id="detail-year">1990</span>
+            <span class="meta-dot"></span>
+            <span id="detail-genre">Genre</span>
+            <span class="meta-dot"></span>
+            <span id="detail-size">Taille</span>
+          </div>
+
+          <div class="detail-source-badge" id="detail-source-badge">
+            <svg class="svg-icon" style="width: 14px; height: 14px;"><use href="#icon-check"></use></svg>
+            <span id="detail-source-text">Source vérifiée</span>
+          </div>
+
+          <div class="detail-section-title">Manettes &amp; Contrôles Pris en Charge :</div>
+          <div class="controller-badges-grid" id="detail-controllers-list"></div>
+
+          <div class="detail-section-title" style="margin-top: 14px;">Compatibilité PC :</div>
+          <div id="detail-pc-compat" class="detail-compat-box">Compatibilité 60 FPS</div>
+
+          <div class="detail-section-title" style="margin-top: 14px;">Description :</div>
+          <p id="detail-description" class="game-detail-desc"></p>
+
+          <!-- NxBrew Packages & Playwright Resolver -->
+          <div id="detail-nxbrew-section" style="display: none; margin-top: 14px;">
+            <div id="nxbrew-active-resolved-card" style="display: none;"></div>
+          </div>
+
+          <div class="game-detail-actions" id="detail-actions-row">
+            <!-- Buttons dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== MODAL: SCAN DOWNLOADS =================== -->
+  <div id="scan-downloads-modal" class="modal-backdrop" onclick="closeScanDownloadsModal(event)">
+    <div class="modal-card" style="max-width: 680px;" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg class="svg-icon text-accent"><use href="#icon-scan"></use></svg>
+          <h2 class="modal-title">Fichiers Détectés dans vos Téléchargements</h2>
+        </div>
+        <button class="modal-close-btn" onclick="closeScanDownloadsModal()">
+          <svg class="svg-icon"><use href="#icon-close"></use></svg>
+        </button>
+      </div>
+
+      <div class="modal-content">
+        <p class="form-help-text" style="margin-bottom: 16px;">
+          AetherDeck a analysé votre dossier de téléchargements Windows. Cliquez sur « Importer » pour ajouter immédiatement un jeu à votre bibliothèque.
+        </p>
+        <div id="scanned-files-list" class="scanned-files-list">
+          <div style="text-align: center; padding: 30px; color: var(--text-secondary);">Recherche en cours...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== MODAL: INTERACTIVE TUTORIAL =================== -->
+  <div id="tutorial-modal" class="modal-backdrop" onclick="closeTutorialModal(event)">
+    <div class="modal-card tutorial-modal-card" onclick="event.stopPropagation()">
+      <div class="tutorial-step" id="tutorial-step-1">
+        <div class="tutorial-step-badge">Étape 1 sur 5</div>
+        <h2 class="tutorial-title">Bienvenue sur AetherDeck</h2>
+        <p class="tutorial-desc">
+          AetherDeck centralise 16 consoles et architectures mythiques (Atari 2600, Arcade / Neo Geo, Amstrad CPC, Commodore Amiga, NES, SNES, Game Boy Advance, Nintendo DS, Nintendo 3DS, Sega Mega Drive, Nintendo 64, PlayStation 1, PSP, Sega Dreamcast, Nintendo Wii / GameCube et Nintendo Switch) au sein d'une interface unifiée.
+        </p>
+        <div class="tutorial-graphic">
+          <svg class="svg-icon" style="width: 54px; height: 54px; color: var(--accent-primary);"><use href="#icon-console"></use></svg>
+        </div>
+      </div>
+
+      <div class="tutorial-step" id="tutorial-step-2" style="display: none;">
+        <div class="tutorial-step-badge">Étape 2 sur 5</div>
+        <h2 class="tutorial-title">Recherche &amp; Téléchargement Direct</h2>
+        <p class="tutorial-desc">
+          Tapez simplement le nom d'un jeu (par exemple « Mario » ou « Sonic ») dans la barre de recherche. Cliquez sur la carte d'un jeu pour voir ses caractéristiques, sa taille et le télécharger en un clic.
+        </p>
+        <div class="tutorial-graphic">
+          <svg class="svg-icon" style="width: 54px; height: 54px; color: var(--accent-primary);"><use href="#icon-search"></use></svg>
+        </div>
+      </div>
+
+      <div class="tutorial-step" id="tutorial-step-3" style="display: none;">
+        <div class="tutorial-step-badge">Étape 3 sur 5</div>
+        <h2 class="tutorial-title">Ma Bibliothèque</h2>
+        <p class="tutorial-desc">
+          Tous vos jeux téléchargés ou importés apparaissent dans « Ma Bibliothèque ». Cliquez simplement sur « Lancer » : l'émulateur approprié s'ouvre automatiquement avec vos contrôles préconfigurés.
+        </p>
+        <div class="tutorial-graphic">
+          <svg class="svg-icon" style="width: 54px; height: 54px; color: var(--accent-primary);"><use href="#icon-library"></use></svg>
+        </div>
+      </div>
+
+      <div class="tutorial-step" id="tutorial-step-4" style="display: none;">
+        <div class="tutorial-step-badge">Étape 4 sur 5</div>
+        <h2 class="tutorial-title">Prise en Charge des Manettes</h2>
+        <p class="tutorial-desc">
+          Toutes les manettes (Xbox, PlayStation, Nintendo Switch, manettes USB rétro ou Clavier) sont reconnues automatiquement. L'onglet « Manettes » vous permet de réaffecter n'importe quelle touche touche par touche.
+        </p>
+        <div class="tutorial-graphic">
+          <svg class="svg-icon" style="width: 54px; height: 54px; color: var(--accent-primary);"><use href="#icon-gamepad"></use></svg>
+        </div>
+      </div>
+
+      <div class="tutorial-step" id="tutorial-step-5" style="display: none;">
+        <div class="tutorial-step-badge">Étape 5 sur 5</div>
+        <h2 class="tutorial-title">Panneau de Configuration &amp; GPU</h2>
+        <p class="tutorial-desc">
+          Le panneau « Configuration » vous offre le contrôle complet sur le choix du processeur graphique (GPU), l'API vidéo (Vulkan/Direct3D), la résolution interne (1x à 4x) et le profil PC (Mode Éco pour les machines légères).
+        </p>
+        <div class="tutorial-graphic">
+          <svg class="svg-icon" style="width: 54px; height: 54px; color: var(--accent-primary);"><use href="#icon-settings"></use></svg>
+        </div>
+      </div>
+
+      <div class="tutorial-footer">
+        <button id="tutorial-prev-btn" class="pill-btn" onclick="prevTutorialStep()" style="visibility: hidden;">Précédent</button>
+        <div class="tutorial-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <button id="tutorial-next-btn" class="pill-btn primary" onclick="nextTutorialStep()">Suivant</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== MODAL: LEGAL COMPLIANCE & THIRD-PARTY SOURCES CONSENT =================== -->
+  <div id="legal-consent-modal" class="modal-backdrop" onclick="closeLegalConsentModal(event)">
+    <div class="modal-card" style="max-width: 760px; padding: 20px 24px;" onclick="event.stopPropagation()">
+      <div class="modal-header" style="margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg class="svg-icon text-accent"><use href="#icon-info"></use></svg>
+          <h2 class="modal-title">Charte Légale, Droit d'Auteur &amp; Sources Tierces</h2>
+        </div>
+        <button class="modal-close-btn" onclick="closeLegalConsentModal()" title="Fermer">
+          <svg class="svg-icon"><use href="#icon-close"></use></svg>
+        </button>
+      </div>
+
+      <div class="modal-content" style="display: flex; flex-direction: column; gap: 10px; font-size: 12.8px; line-height: 1.5; color: var(--text-secondary);">
+        <div style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.25); border-radius: 10px; padding: 10px 14px; color: var(--text-primary);">
+          <strong>1. Statut Juridique de l'Architecture AetherDeck</strong>
+          <p style="margin-top: 3px; color: var(--text-secondary);">
+            AetherDeck est un gestionnaire d'émulation open-source (licence MIT) conçu à des fins d'interopérabilité technique, d'étude et de préservation matérielle.
+            Conformément à la législation en vigueur (Article L122-6-1 du Code de la propriété intellectuelle en France, Directive Européenne 2009/24/CE et 17 U.S.C. § 117 DMCA), l'émulation logicielle est parfaitement légale.
+            <strong>Ce logiciel ne fournit, n'héberge et ne distribue aucun fichier ROM protégé, BIOS propriétaire ou clé cryptographique.</strong>
+          </p>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.28); border-radius: 10px; padding: 10px 14px; color: var(--text-primary);">
+          <strong>2. Avertissement Relatif aux Indexeurs et Sites Tiers Externes</strong>
+          <p style="margin-top: 3px; color: var(--text-secondary);">
+            Certaines passerelles de recherche optionnelles (telles que <code>NxBrew</code> ou <code>SmallGames.ch</code>) sont des sites externes tiers totalement indépendants et non affiliés à l'auteur d'AetherDeck.
+            Ces plateformes tierces peuvent référencer des œuvres commerciales soumises au droit d'auteur qui ne sont pas libres de droits dans votre juridiction.
+            <strong>Par défaut, ces sources externes sont désactivées dans AetherDeck.</strong>
+          </p>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-subtle); border-radius: 10px; padding: 10px 14px; color: var(--text-primary);">
+          <strong>3. Exception de Copie Privée &amp; Responsabilité Exclusive de l'Utilisateur</strong>
+          <p style="margin-top: 3px; color: var(--text-secondary);">
+            Le téléchargement ou l'importation d'une copie de sauvegarde (ROM / ISO / NSP) d'un jeu commercial n'est autorisé que si vous possédez légalement le support original physique ou numérique (exception de copie privée — Art. L122-5 du CPI).
+            En activant les sources externes tierces, vous agissez de votre propre initiative et dégagez intégralement l'auteur d'AetherDeck de toute responsabilité quant à l'usage que vous faites des réseaux tiers.
+          </p>
+        </div>
+
+        <label class="checkbox-label" style="margin-top: 2px; padding: 9px 12px; background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: 8px; cursor: pointer;">
+          <input type="checkbox" id="legal-consent-checkbox" />
+          <span style="color: var(--text-primary); font-weight: 600;">
+            Je certifie avoir pris connaissance de la charte légale, comprendre que les sites externes tiers ne sont pas affiliés à AetherDeck, et assumer l'entière et exclusive responsabilité légale du respect du droit d'auteur dans mon pays.
+          </span>
+        </label>
+
+        <div id="legal-status-banner" style="font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+          <span id="legal-status-text">Statut actuel : Sources externes tierces désactivées (Mode strict par défaut)</span>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px;">
+          <button class="pill-btn" onclick="submitLegalConsent(false)">
+            <span>Maintenir désactivé (Mode Strict)</span>
+          </button>
+          <button class="pill-btn primary" onclick="submitLegalConsent(true)">
+            <svg class="svg-icon"><use href="#icon-check"></use></svg>
+            <span>J'accepte et j'active les sources externes</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- App Script -->
+  <script src="app.js"></script>
+</body>
+</html>

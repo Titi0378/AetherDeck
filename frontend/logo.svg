@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" fill="none">
+  <defs>
+    <linearGradient id="hexOuter" x1="16" y1="8" x2="112" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="hexInner" x1="28" y1="24" x2="100" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="dpadGrad" x1="40" y1="40" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <!-- Outer Hexagonal Prism -->
+  <polygon points="64,6 116,35 116,93 64,122 12,93 12,35" fill="url(#hexOuter)" stroke="#93c5fd" stroke-width="2" stroke-opacity="0.45"/>
+  <!-- Inner Recessed Core -->
+  <polygon points="64,18 104,41 104,87 64,110 24,87 24,41" fill="url(#hexInner)" stroke="#1d4ed8" stroke-width="1.5"/>
+  <!-- Optical Disc Ring -->
+  <circle cx="64" cy="64" r="31" fill="#1e293b" fill-opacity="0.7" stroke="#38bdf8" stroke-width="2" stroke-opacity="0.5"/>
+  <path d="M 64 33 A 31 31 0 0 1 95 64" stroke="#60a5fa" stroke-width="3.5" stroke-linecap="round"/>
+  <!-- Central D-Pad Cross -->
+  <path d="M57 42 H71 V57 H86 V71 H71 V86 H57 V71 H42 V57 H57 Z" fill="url(#dpadGrad)" stroke="#0f172a" stroke-width="3" stroke-linejoin="round"/>
+</svg>

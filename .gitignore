@@ -1,0 +1,86 @@
+# ====================================================================
+# AetherDeck — Git Ignore Rules (Strict Copyright & Binary Exclusion)
+# ====================================================================
+
+# Python bytecode & virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+
+# Emulator binaries, portable runtimes, NAND, BIOS & cryptographic keys
+emulators/*
+!emulators/.gitkeep
+**/prod.keys
+**/title.keys
+**/console.keys
+**/keys.dat
+**/bis/
+**/system/nand/
+**/firmware*.zip
+
+# Local user ROMs, ISOs, disk images & game packages (Never commit games)
+roms/*
+!roms/.gitkeep
+*.nsp
+*.xci
+*.nsz
+*.nca
+*.nro
+*.rvz
+*.wbfs
+*.iso
+*.gcm
+*.dol
+*.elf
+*.3ds
+*.cci
+*.cxi
+*.cia
+*.nds
+*.dsi
+*.chd
+*.cdi
+*.gdi
+*.cso
+*.pbp
+*.cue
+*.bin
+*.z64
+*.n64
+*.v64
+*.sfc
+*.smc
+*.nes
+*.fds
+*.gba
+*.gbc
+*.gb
+*.gen
+*.smd
+!*.md
+!README.md
+!LEGAL.md
+*.dsk
+*.adf
+*.hdf
+*.a26
+
+# Runtime user state, local library & downloaded boxart cache
+data/*
+!data/.gitkeep
+
+# OS & IDE metadata
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.log
+*.tmp
+AGENT_CONTINUITY.md
