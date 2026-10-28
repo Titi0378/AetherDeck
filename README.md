@@ -119,7 +119,7 @@ Tous les moteurs sont téléchargés et configurés automatiquement en mode **10
 
 ```powershell
 # 1. Cloner le dépôt GitHub
-git clone https://github.com/VOTRE_UTILISATEUR/AetherDeck.git
+git clone https://github.com/Titi0378/AetherDeck.git
 cd AetherDeck
 
 # 2. Installer les dépendances Python et provisionner automatiquement les 16 moteurs d'émulation
